@@ -103,7 +103,6 @@ export default function AboutPage() {
                 <li>Operating Systems</li>
                 <li>Computer Networks</li>
                 <li>Web Engineering</li>
-                <li>Software Engineering</li>
               </ul>
             </section>
 
@@ -120,7 +119,7 @@ export default function AboutPage() {
               </div>
               <h4 className="mt-4 text-sm font-medium">Languages I speak</h4>
               <div className="mt-2 flex flex-wrap gap-2">
-                {["Telugu", "English", "Tamil", "Hindi", "Kannada", "Malayalam"].map((l) => (
+                {["Telugu", "English", "Hindi"].map((l) => (
                   <span key={l} className="rounded-md bg-muted px-2.5 py-1 text-xs text-muted-foreground">
                     {l}
                   </span>
