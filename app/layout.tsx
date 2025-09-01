@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import "./globals.css"
 import Link from "next/link"
 import { Suspense } from "react" // Suspense must come from react
+import Script from "next/script"
 // import Image from "next/image"
 import ThemeToggle from "@/components/theme-toggle"
 import { PlayerProvider } from "@/components/player/player-context"
@@ -12,7 +13,7 @@ import AiFab from "@/components/ai/ai-fab"
 
 export const metadata: Metadata = {
   title: "TuneStream",
-  description: "Spotify-like music player",
+  description: "Ad Free Music player",
     generator: 'v0.app'
 }
 
@@ -20,11 +21,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className="antialiased">
       <body className="bg-background text-foreground">
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('theme');if(t==='dark'){document.documentElement.classList.add('dark');}else{document.documentElement.classList.remove('dark');}}catch(e){}})();`,
-          }}
-        />
+        <Script id="theme-init" strategy="beforeInteractive">
+          {`
+            (function () {
+              try {
+                var t = localStorage.getItem('theme');
+                if (t === 'dark') {
+                  document.documentElement.classList.add('dark');
+                } else {
+                  document.documentElement.classList.remove('dark');
+                }
+              } catch (e) {}
+            })();
+          `}
+        </Script>
         <PlayerProvider>
           <header className="sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur">
             <div className="mx-auto grid max-w-6xl grid-cols-3 items-center px-4 py-3">
@@ -42,7 +52,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <div className="justify-self-center">
                 <TimeDisplay className="text-sm md:text-base text-muted-foreground" />
               </div>
-              <nav className="flex items-center justify-end gap-1">
+              <nav role="navigation" aria-label="Primary" className="flex items-center justify-end gap-1">
                 <Link
                   href="/"
                   className="rounded-md px-3 py-1.5 text-sm text-foreground/80 hover:bg-secondary hover:text-secondary-foreground focus:outline-none focus:ring-2 focus:ring-ring"
@@ -77,6 +87,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <PlayerBar />
           <AiFab />
         </PlayerProvider>
+
+        <Script src="https://www.googletagmanager.com/gtag/js?id=G-HL97P0WZET" strategy="afterInteractive" />
+        <Script id="gtag-init" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-HL97P0WZET');
+          `}
+        </Script>
       </body>
     </html>
   )
