@@ -60,7 +60,7 @@ function pickImageUrl(images: any): string | null {
 function normalizeSong(item: any) {
   const originalSrc = pickDownloadUrl((item?.downloadUrl)[3]) || null
   const imageUrl = pickImageUrl(item?.image) || null
-  const artist = (item?.primaryArtists as string) || ""
+  const artist = (item?.artists.primary[0].name as string) || ""
   const title = (item?.title as string) || (item?.name as string) || "Unknown"
 
   // Always proxy through /api/media to support CORS + Range seeking
