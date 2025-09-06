@@ -58,7 +58,7 @@
 /* Dark mode: deep blue */
 .dark {
   --background: #0f172a; /* slate-900 */
-  --foreground: #ffffff; /* force pure white text */
+  --foreground: #e2e8f0; /* slate-200 */
 
   --card: #111827; /* gray-900 */
   --card-foreground: #cbd5e1; /* slate-300 */

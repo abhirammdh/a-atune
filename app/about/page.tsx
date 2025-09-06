@@ -37,7 +37,7 @@ export default function AboutPage() {
             </div>
           </div>
 
-          <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
+          <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-3">
             <Link
               href="https://github.com/abhirammdh"
               className="rounded-lg border border-border p-3 hover:bg-accent/10"
@@ -75,16 +75,13 @@ export default function AboutPage() {
           <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
             <section className="rounded-xl border border-border p-6">
               <h3 className="text-lg font-semibold">Professional Summary</h3>
-              <div className="mt-3 rounded-lg bg-primary px-4 py-3 text-sm leading-relaxed text-primary-foreground">
-                music-tech and user-centered product design. I enjoy building performant, responsive, and accessible
-                interfaces with a clean architecture and attention to detail, from component systems to data flows.
-              </div>
+              <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
+                Aspiring software engineer passionate about music-tech and user-centered product design. I enjoy
+                building performant, responsive, and accessible interfaces with a clean architecture and attention to
+                detail, from component systems to data flows.
+              </p>
               <ul className="mt-4 list-disc pl-5 text-sm text-muted-foreground space-y-1">
-                <li>
-                  <span className="inline-block rounded-md bg-primary px-2.5 py-1 text-primary-foreground">
-                    Front-end: Next.js (App Router), React Server/Client Components, Tailwind + shadcn/ui
-                  </span>
-                </li>
+                <li>Front-end: Next.js (App Router), React Server/Client Components, Tailwind + shadcn/ui</li>
                 <li>State &amp; data: SWR, simple server actions, API route handlers</li>
                 <li>Quality: a11y-first, semantic HTML, sensible defaults, and design tokens</li>
               </ul>
@@ -103,6 +100,7 @@ export default function AboutPage() {
                 <li>Operating Systems</li>
                 <li>Computer Networks</li>
                 <li>Web Engineering</li>
+                <li>Software Engineering</li>
               </ul>
             </section>
 
@@ -119,7 +117,7 @@ export default function AboutPage() {
               </div>
               <h4 className="mt-4 text-sm font-medium">Languages I speak</h4>
               <div className="mt-2 flex flex-wrap gap-2">
-                {["Telugu", "English", "Hindi"].map((l) => (
+                {["Telugu", "English", "Tamil", "Hindi", "Kannada", "Malayalam"].map((l) => (
                   <span key={l} className="rounded-md bg-muted px-2.5 py-1 text-xs text-muted-foreground">
                     {l}
                   </span>
