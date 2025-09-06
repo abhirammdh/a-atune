@@ -76,7 +76,6 @@ function normalizeSong(item: any) {
     raw: item,
   }
 }
-}
 
 export async function GET(req: Request, { params }: { params: { type: string } }) {
   const { type } = params
