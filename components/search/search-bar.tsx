@@ -7,10 +7,9 @@ import { Search } from "lucide-react"
 
 export default function SearchBar({ onSubmit }: { onSubmit: (q: string) => void }) {
   const [q, setQ] = React.useState("")
-  const [suggestions, setSuggestions] = React.useState<string[]>([])
+  const [suggestions, setSuggestions] = React.useState<Array<{ title: string; artist: string }>>([])
   const [showSuggestions, setShowSuggestions] = React.useState(false)
 
-  // Fetch suggestions as user types
   React.useEffect(() => {
     if (q.trim().length < 2) {
       setSuggestions([])
@@ -19,14 +18,17 @@ export default function SearchBar({ onSubmit }: { onSubmit: (q: string) => void 
 
     const timer = setTimeout(async () => {
       try {
-        const res = await fetch(`/api/search?q=${encodeURIComponent(q.trim())}&limit=5`)
+        const res = await fetch(`/api/search/songs?query=${encodeURIComponent(q.trim())}&limit=10`)
         if (res.ok) {
           const data = await res.json()
-          const titles = data.results?.map((r: any) => r.title || r.name).filter(Boolean) || []
-          setSuggestions(titles.slice(0, 5))
+          const songs = (data.data || []).slice(0, 8).map((s: any) => ({
+            title: s.title || "Unknown",
+            artist: s.artist || "",
+          }))
+          setSuggestions(songs)
         }
       } catch (err) {
-        console.error("Autocomplete error:", err)
+        console.error("[v0] Autocomplete error:", err)
       }
     }, 300)
 
@@ -65,19 +67,20 @@ export default function SearchBar({ onSubmit }: { onSubmit: (q: string) => void 
       </form>
 
       {showSuggestions && suggestions.length > 0 && (
-        <div className="absolute top-full left-0 right-0 z-50 mt-1 rounded-lg border border-border bg-card shadow-lg">
+        <div className="absolute top-full left-0 right-0 z-50 mt-1 rounded-lg border border-border bg-card shadow-lg max-h-64 overflow-y-auto">
           {suggestions.map((suggestion, i) => (
             <button
               key={i}
               type="button"
               onClick={() => {
-                setQ(suggestion)
-                onSubmit(suggestion)
+                setQ(suggestion.title)
+                onSubmit(suggestion.title)
                 setShowSuggestions(false)
               }}
               className="w-full px-4 py-2 text-left text-sm hover:bg-secondary transition-colors first:rounded-t-lg last:rounded-b-lg"
             >
-              {suggestion}
+              <div className="font-medium">{suggestion.title}</div>
+              {suggestion.artist && <div className="text-xs text-muted-foreground">{suggestion.artist}</div>}
             </button>
           ))}
         </div>

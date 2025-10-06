@@ -19,7 +19,7 @@ export default function LogoAnimation() {
       <div className="flex flex-col items-center gap-4 animate-scale-in">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="https://i.ibb.co/Hpbfnpmv/Untitled-design.png"
+          src="/images/design-mode/Untitled-design.png"
           alt="A2A Tune"
           className="h-24 w-24 rounded-lg object-cover"
         />

@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { usePlayer, type NormalizedSong } from "@/components/player/player-context"
+import { FileText } from "lucide-react"
 
 function isAudioLike(u: string) {
   return (
@@ -70,6 +71,7 @@ function TrackList({ tracks }: { tracks: NormalizedSong[] }) {
               </div>
             </div>
             <div className="flex items-center gap-1">
+              {/* Play/Pause */}
               <Button
                 size="icon"
                 className="bg-primary hover:bg-primary/90 text-primary-foreground"
@@ -78,7 +80,6 @@ function TrackList({ tracks }: { tracks: NormalizedSong[] }) {
                 onClick={() => {
                   const playableQueue = tracks.filter((x) => canPlay(x.audioUrl))
                   if (!playableQueue.length) return
-                  // If current track clicked, toggle; else load full queue starting at selected index
                   if (isCurrent) {
                     p.toggle()
                     return
@@ -91,16 +92,27 @@ function TrackList({ tracks }: { tracks: NormalizedSong[] }) {
                 title={isCurrent && p.isPlaying ? "Pause" : "Play"}
               >
                 {isCurrent && p.isPlaying ? (
-                  // Pause icon (inline SVG); can replace with Flaticon asset later
                   <svg width="18" height="18" viewBox="0 0 24 24" className="fill-current">
                     <path d="M6 5h4v14H6zM14 5h4v14h-4z" />
                   </svg>
                 ) : (
-                  // Play icon (triangle)
                   <svg width="18" height="18" viewBox="0 0 24 24" className="fill-current">
                     <path d="M8 5v14l11-7z" />
                   </svg>
                 )}
+              </Button>
+
+              <Button
+                variant="ghost"
+                size="icon"
+                aria-label="View lyrics"
+                title="View lyrics"
+                onClick={() => {
+                  // TODO: implement lyrics modal/panel
+                  alert(`Lyrics for "${s.title}" - Coming soon!`)
+                }}
+              >
+                <FileText className="h-4 w-4" />
               </Button>
 
               {/* Add to queue (+) */}
@@ -111,7 +123,6 @@ function TrackList({ tracks }: { tracks: NormalizedSong[] }) {
                 title="Add to queue"
                 onClick={() => p.addToQueue(s)}
               >
-                {/* Plus icon (stroke) */}
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="stroke-current">
                   <path d="M12 5v14M5 12h14" strokeWidth="2" strokeLinecap="round" />
                 </svg>

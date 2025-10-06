@@ -3,13 +3,12 @@
 import * as React from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Home, ListMusic, Download, Info, Menu, X, Music } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { Home, ListMusic, Download, Info, Music } from "lucide-react"
 import ThemeToggle from "@/components/theme-toggle"
 import { TimeDisplay } from "@/components/nav-time"
 
 export default function Sidebar() {
-  const [isOpen, setIsOpen] = React.useState(true)
+  const [isOpen, setIsOpen] = React.useState(false)
   const pathname = usePathname()
 
   const navItems = [
@@ -22,37 +21,26 @@ export default function Sidebar() {
   return (
     <>
       <aside
+        onMouseEnter={() => setIsOpen(true)}
+        onMouseLeave={() => setIsOpen(false)}
         className={`fixed left-0 top-0 z-50 h-screen border-r border-border bg-card transition-all duration-300 ${
           isOpen ? "w-64" : "w-16"
         }`}
       >
         <div className="flex h-full flex-col">
-          {/* Logo and toggle */}
-          <div className="flex items-center justify-between border-b border-border p-4">
+          {/* Logo */}
+          <div className="flex items-center justify-center border-b border-border p-4">
             {isOpen ? (
               <Link href="/" className="flex items-center gap-2">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="https://i.ibb.co/Hpbfnpmv/Untitled-design.png"
-                  alt="A2A Tune"
-                  className="h-8 w-8 rounded object-cover"
-                />
+                <img src="/a2atune-logo.png" alt="A2A Tune" className="h-10 w-10 rounded object-cover" />
                 <span className="text-lg font-bold">A2A Tune</span>
               </Link>
             ) : (
-              <Link href="/" className="flex items-center justify-center">
-                <Music className="h-6 w-6" />
+              <Link href="/" className="flex items-center justify-center" title="A2A Tune">
+                
               </Link>
             )}
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setIsOpen(!isOpen)}
-              className="ml-auto"
-              aria-label={isOpen ? "Close sidebar" : "Open sidebar"}
-            >
-              {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </Button>
           </div>
 
           {/* Navigation */}
@@ -89,14 +77,6 @@ export default function Sidebar() {
           </div>
         </div>
       </aside>
-
-      {/* Mobile overlay */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 z-40 bg-background/80 backdrop-blur-sm md:hidden"
-          onClick={() => setIsOpen(false)}
-        />
-      )}
     </>
   )
 }

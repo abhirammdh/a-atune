@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
+import crypto from "crypto"
 
 const BASE = "https://devplay-ashy.vercel.app/api/search"
-
 
 // Simple server-side normalizer to guarantee an array
 function toArray(payload: any): any[] {
@@ -34,7 +34,7 @@ function pickDownloadUrl(input: any): string | null {
         return null
       })
       .filter(Boolean) as string[]
-    return candidates.length ? candidates[0] : null
+    return candidates[3] || candidates[candidates.length - 1] || candidates[0] || null
   }
   if (typeof input === "object") {
     return (input.url as string) || (input.link as string) || null
@@ -60,10 +60,10 @@ function pickImageUrl(images: any): string | null {
 function normalizeSong(item: any) {
   const originalSrc = pickDownloadUrl(item?.downloadUrl) || null
   const imageUrl = pickImageUrl(item?.image) || null
-  const artist = (item?.primaryArtists as string) || ""
+  const artist =
+    (Array.isArray(item?.artists?.primary) ? item.artists.primary[0]?.name : item?.primaryArtists) || item?.artist || ""
   const title = (item?.title as string) || (item?.name as string) || "Unknown"
 
-  // Always proxy through /api/media to support CORS + Range seeking
   const src = originalSrc ? `/api/media?src=${encodeURIComponent(originalSrc)}` : null
 
   return {
@@ -81,6 +81,8 @@ export async function GET(req: Request, { params }: { params: { type: string } }
   const { type } = params
   const url = new URL(req.url)
   const q = url.searchParams.get("query") || ""
+  const limitParam = url.searchParams.get("limit")
+  const limit = limitParam ? Math.min(Math.max(Number.parseInt(limitParam, 10), 1), 200) : 100
 
   const allowed = new Set(["songs", "playlists", "albums"])
   if (!allowed.has(type)) {
@@ -92,7 +94,7 @@ export async function GET(req: Request, { params }: { params: { type: string } }
   }
 
   try {
-    const upstream = `${BASE}/${type}?query=${encodeURIComponent(q)}`
+    const upstream = `${BASE}/${type}?query=${encodeURIComponent(q)}&limit=${limit}`
     const res = await fetch(upstream, { headers: { accept: "application/json" } })
     if (!res.ok) {
       return NextResponse.json({ error: "Upstream error", status: res.status }, { status: 502 })
@@ -105,7 +107,6 @@ export async function GET(req: Request, { params }: { params: { type: string } }
       return NextResponse.json({ data: normalized, query: q })
     }
 
-    // Normalize albums to expose album art from image[1].link and artist
     if (type === "albums") {
       const normalizedAlbums = data.map((item: any) => ({
         ...item,
@@ -115,7 +116,6 @@ export async function GET(req: Request, { params }: { params: { type: string } }
       return NextResponse.json({ data: normalizedAlbums, query: q })
     }
 
-    // For playlists, return as-is for now
     return NextResponse.json({ data, query: q })
   } catch (e) {
     return NextResponse.json({ error: "Fetch failed" }, { status: 500 })

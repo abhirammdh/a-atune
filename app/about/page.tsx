@@ -10,7 +10,7 @@ export default function AboutPage() {
         <div className="mt-8 rounded-2xl border border-border bg-card p-8 md:p-12">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-center">
             <img
-              src="https://i.ibb.co/M59pYPm8/my-profile-img.jpg"
+              src="/images/design-mode/my-profile-img.jpg"
               alt="Devulapalli Abhiram"
               width={176}
               height={176}
