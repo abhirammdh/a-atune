@@ -32,6 +32,7 @@ export function AiSuggestButton({ children }: { children: React.ReactNode }) {
         const data = (await res.json()) as { queries: string[] }
         setQueries(data.queries ?? [])
       } catch (err) {
+        console.log("[v0] AI recommend error:", (err as Error).message)
         setQueries([])
       }
     })

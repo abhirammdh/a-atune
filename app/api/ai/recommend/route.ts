@@ -29,6 +29,7 @@ export async function POST(req: Request) {
     })
 
     if (!res.ok) {
+      console.log("[v0] Google NL error status:", res.status)
       return NextResponse.json({ queries: fallbackQueries(language, clientMood ?? "neutral") })
     }
 
@@ -39,6 +40,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ queries: fallbackQueries(language, mood) })
   } catch (err) {
+    console.log("[v0] recommend route error:", (err as Error).message)
     return NextResponse.json({ queries: fallbackQueries("english", "neutral") })
   }
 }

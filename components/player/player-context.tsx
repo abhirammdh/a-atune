@@ -123,6 +123,7 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
     }
 
     const effectiveSrc = toProxied(track.audioUrl)
+    console.log("[v0] loading audio src:", effectiveSrc)
 
     audio.src = effectiveSrc
     audio.currentTime = 0
@@ -132,6 +133,7 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
       .play()
       .then(() => setIsPlaying(true))
       .catch((err) => {
+        console.log("[v0] audio.play() failed:", err?.message || err)
         setIsPlaying(false)
       })
   }, [index, queue, toProxied]) // eslint-disable-line
